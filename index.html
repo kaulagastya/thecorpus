@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Corpus — Writing Archive</title>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html, body {
+    height:100%;
+    font-family: Georgia, "Times New Roman", serif;
+    color:#ffffff;
+}
+
+body {
+    background-image:url("Hieronymus-Bosch-renaissance-pandemonium-hell-painting-Inferno-2271952-wallhere.com.jpg");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+}
+
+/* OVERLAY */
+.overlay {
+    min-height:100%;
+    background:linear-gradient(
+        rgba(0,0,0,0.45),
+        rgba(0,0,0,0.25)
+    );
+}
+
+/* HEADER */
+header {
+    padding:50px;
+    text-align:center;
+}
+
+header h1 {
+    font-size:3rem;
+    letter-spacing:2px;
+}
+
+
+.subtitle {
+    margin-top: 20px;
+    font-style: italic;
+    opacity: 0.85;
+}
+
+/* NAV */
+nav {
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    padding:20px;
+    border-top:1px solid rgba(255,255,255,0.2);
+    border-bottom:1px solid rgba(255,255,255,0.2);
+    flex-wrap:wrap;
+}
+
+nav button {
+    background:none;
+    border:none;
+    color:#ffffff;
+    font-size:1rem;
+    cursor:pointer;
+    opacity:0.8;
+}
+
+nav button:hover {
+    opacity:1;
+    text-decoration:underline;
+}
+
+/* MAIN */
+main {
+    max-width:1100px;
+    margin:60px auto;
+    padding:0 40px;
+}
+
+.category { display:none; }
+.category.active { display:block; }
+
+h2 {
+    font-size:2rem;
+    margin-bottom:30px;
+}
+
+/* GRID */
+.grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:30px;
+}
+
+.card {
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    cursor:pointer;
+}
+
+.card img {
+    width:100%;
+    height:170px;
+    object-fit:cover;
+}
+
+.card-content {
+    padding:15px;
+}
+
+.card-content h3 {
+    font-family:"Times New Roman", serif;
+    font-weight:bold;
+    font-style:italic;
+    text-decoration:underline;
+    margin-bottom:6px;
+}
+
+.card-content p {
+    opacity:0.85;
+}
+
+/* MODAL */
+.modal {
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.92);
+    z-index:9999;
+    overflow-y:auto;
+}
+
+.modal-content {
+    max-width:850px;
+    margin:80px auto;
+    background:#111;
+    padding:50px;
+    border:1px solid rgba(255,255,255,0.25);
+}
+
+/* MODAL TITLE */
+.modal h2 {
+    font-family:"Times New Roman", serif;
+    font-weight:bold;
+    font-style:italic;
+    text-decoration:underline;
+    margin-bottom:10px;
+}
+
+/* META LINE */
+.modal .meta {
+    font-size:15px;
+    font-style:italic;
+    opacity:0.75;
+    margin-bottom:12px;
+}
+
+/* SEPARATOR LINE (LIKE SCREENSHOT) */
+.modal .divider {
+    border:none;
+    border-top:1px solid rgba(255,255,255,0.4);
+    margin:18px 0 28px 0;
+}
+
+/* MODAL IMAGE */
+.modal img {
+    width:100%;
+    margin-bottom:35px;
+    display:block;
+    border:1px solid rgba(255,255,255,0.15);
+}
+
+/* MODAL BODY TEXT */
+.modal p {
+    font-family:"Times New Roman", serif;
+    font-size:18.5px;
+    line-height:2;
+    text-align:justify;
+    white-space:pre-line;
+}
+
+/* CLOSE */
+.close {
+    text-align:right;
+    cursor:pointer;
+    opacity:0.7;
+    margin-bottom:15px;
+}
+.close:hover { opacity:1; }
+
+/* FOOTER */
+footer {
+    text-align:center;
+    padding:30px;
+    font-size:0.85rem;
+    opacity:0.6;
+}
+
+body.modal-open footer { display:none; }
+</style>
+</head>
+
+<body>
+<div class="overlay">
+
+<header>
+    <h1>The Corpus</h1>
+    <p class="subtitle">A personal archive of writing</p>
+</header>
+
+<nav>
+    <button onclick="showCategory('descriptive')">Descriptive</button>
+    <button onclick="showCategory('narrative')">Narrative</button>
+    <button onclick="showCategory('Dossiers')">Dossiers</button>
+    <button onclick="showCategory('about')">About</button>
+</nav>
+
+<main>
+
+<section id="descriptive" class="category active">
+    <h2>Descriptive</h2>
+    <div class="grid" id="descriptive-grid"></div>
+</section>
+
+<section id="narrative" class="category">
+    <h2>Narrative</h2>
+    <div class="grid" id="narrative-grid"></div>
+</section>
+
+<section id="Dossiers" class="category">
+    <h2>Dossiers</h2>
+    <div class="grid" id="Dossiers-grid"></div>
+</section>
+
+<section id="about" class="category">
+    <h2>About the Author</h2>
+    <p style="max-width:700px; line-height:1.9; opacity:0.9;">
+        This is a living archive of writing concerned with power, memory,
+        discipline, interiority, and the quiet mechanics beneath spectacle.
+        <br><br>
+        The author writes where observation hardens into structure.
+    </p>
+</section>
+
+</main>
+
+<footer> © 2026 The Corpus Agastya Sumeer Kaul. All rights reserved. 
+No part of these works may be reproduced without written permission. </footer>
+</div>
+
+<script>
+const works = {
+descriptive: [
+{
+title:"Conflict Of Interest",
+meta:"Agastya Sumeer Kaul (January, 2026)",
+image:"HARVEY.jpg",
+description:"Power, altitude, surveillance.",
+content:
+`Night in Manhattan does not fall—it consolidates, compressing itself into a dense, deliberate atmosphere where light sharpens rather than softens. After dark, the city draws back its illusions to bare a skeleton of glass and steel in a gleam of disciplined indifference. Windows burn in stacked constellations, each one a private assertion of relevance, each tower rising not in hope but in defiance of erasure. From this height, the avenues are not streets anymore but arterial ways, glowing with relentless circulation, carrying intent forward without pause or mercy.
+
+This office exists above that current, suspended in an altitude where noise dissolves and clarity becomes severe. Glass walls do not invite the skyline; they restrain it, rendering excess into geometry, movement into symmetry. Manhattan beyond the pane appears less like a city than a calibrated machine, every illuminated floor a cog, every shadowed gap a necessary omission. Here, darkness is not an absence but an instrument, employed to sharpen contrast, to outline authority.
+
+The interior is absolutely still. The desk anchors the room like a black monolith, its surface arranged with surgical restraint. Shadows fall obediently, folded into corners with consequence unvoiced, heavy. The air itself seems aware that this is not a place for uncertainty but one of alignment.
+
+He stands motionless before the glass, his reflection intertwined with the skyline, until the distinction becomes irrelevant.
+
+From this elevation, humanity collapses into pattern, morality into mechanics, ambition into structure.
+
+Manhattan does not sleep.
+<strong>It watches.</strong>`
+},
+{ title:"Upswingin'", meta:"Agastya Sumeer Kaul (January, 2026)", image:"WHIPLASH.jpg", description:"Tempo. Identity. Erasure.", 
+content: `The room tightens around the kit.
+
+Count.
+
+The sticks rise.
+Fall.
+Again.
+
+Sound fractures the air—sharp, metallic, unforgiving. Each strike lands like an accusation. Too slow. Too clean. Never enough. The drums don’t answer; they absorb. They take everything and give back only pressure.
+
+Faster.
+
+The rhythm accelerates and thought begins to lag. Language drops out first. Then memory. What remains is tempo—pure, tyrannical, absolute. Time collapses into beats. The space between them narrows until even hesitation feels like betrayal.
+
+Hands blur. Skin splits. It doesn’t register. Pain arrives late, like an afterthought that missed its cue. The body learns obedience faster than the mind ever could. Precision is no longer a goal—it’s survival.
+
+Again.
+
+The room disappears. There is no audience, no approval, no sound beyond the demand to continue. Each strike erases the one before it. Progress becomes an illusion. There is only escalation.
+
+Louder.
+
+The rhythm turns predatory. It hunts weakness. It exposes every tremor, every microsecond of doubt. Control is not maintained—it is wrestled back, beat by beat, with violence disguised as discipline.
+
+Faster.
+
+Breath stutters. Vision tunnels. The world reduces itself to impact and echo. The self thins, stretched across tempo until identity becomes secondary to execution.
+
+Then—silence.
+
+Not relief. Not triumph. Just absence.
+
+And in that absence, the truth settles heavy and unadorned:
+
+The sound was never the point.
+
+Endurance was.
+` 
+
+},
+
+{ title:"Wooden Will, Painted Smile, The Spruce Nutcracker", meta:"Agastya Sumeer Kaul (August, 2025)", image:"NUTCRACKER.jpg", description:"Wood. Will. Vigilance", 
+content: `I am the Nutcracker: a lacquered effigy of wood, fixed in a posture of vigilance.
+My jaw, carved to splinter shells, claps open and shut with a hollow snap, a
+sound at once ridiculous and martial. Long have I stood as nothing more than
+ornament: a sentinel of dust upon the mantel, glassy gaze cast outward from
+eyes that never close. But tonight, raised to the towering nave of the Christmas
+tree, I am wrenched from stillness.
+
+The room bends into enchantment. The spruce ascends like a cathedral of green
+fire, its ornaments orbiting like captured worlds, its silver threads spilling down
+as frozen cataracts. Shadows dilate in the corners, distorting into phantoms at
+the stroke of twelve. From that dark, the adversary stirs: the Mouse King,
+crowned in seven cruel tiers, whiskers twitching with hunger, his swarm of
+vermin scraping a dirge upon the floorboards, their eyes burning like cinders
+dropped from hell’s hearth.
+
+I advance. My body groans with the awkward rhythm of timber coaxed to
+motion, each gesture splinter-sharp, each stride a creak of protest. Yet the sword
+once welded to my fist now flashes with a fresh edge. My jaw claps its wooden
+beat, no longer a mechanism, but the cadence of resolve. Around me, the toy 
+host awakens: tin bugles blare, drummers rattle frail but steady rolls, porcelain 
+soldiers gleam with improbable courage.
+
+Though fashioned of paint and pine, I am defiance incarnate. My stiffness is
+endurance; my grin, immutable certainty. No longer a trifling emblem of
+festivity, I stand as the guardian of this spellbound hour, unyielding wood
+quickened into will. I am, irrevocably, the Nutcracker. 
+`
+
+},
+{ title:"“Where Nature Sleeps”", meta:"Agastya Sumeer Kaul (February, 2025)", image:"FARM.jpg", description:"Sanctuary. Verdure. Reverie.", 
+content: `
+Amongst the rolling sweep of green hills, an old cottage languidly lies in the rural fold of the landscape; a fanciful remnant of yore wrapped in nature's green tendrils. This architectural daydream, hovering in a sylvan capsule, is a quintessence of a mystical union between man's artistry and the unfettered wilderness, its timber-framed, weathered frontage decorated with sinuous vines tumbling in lush spirals, intertwining with the gabled eaves in a choreographed entwining of natural and built shapes. 
+
+The pitched roof, clad in somber shingles of slate, slants precipitously down in broken planes, dotted with elaborate dormer windows that shine dimly, like somnambulant eyes gazing through the green veil. From this rough canopy, a slender, pointed turret; charged with an almost ecclesiastical gravity; protrudes into the air, its silhouette dark and ghostly against the cumulonimbus-charged sky, where stormy clouds congregate, filling the air with a menacing chiaroscuro that makes the tableau both otherworldly and phantasmal. 
+
+In the foreground, a peaceful pond rests still, its surface a mercurial sheen of liquid obsidian, scarred periodically by concentric ripples spawned by the gliding flight of a lone swan, whose alabaster feathers harshly contrast the aqueous darkness. Surrounding this limpid jewel, an organic tapestry of untamed grasses and carefully unruly flora waves to the hushed breath of the wind; a sonorous articulation of nature's unrestrained artistry. Lichen-encrusted rocks, weathered and twisted, are fixed sentinels, punctuating the verdure with primeval gravitas. 
+
+A weathered, rustic bridge of hewn wood curves listlessly above the water's edge, its moss-covered planks groaning under the weightless burden of history. This sylvan sanctuary, situated at the intersection of temporal permanence and fleeting beauty, is a place of wistful, otherworldly elegance; a bucolic apotheosis in which time itself seems arrested, throbbing with a muted, timeless pulse.
+`
+},
+{ title:"The City, Drowned Softly", meta:"Agastya Sumeer Kaul (November, 2023)", image:"RAIN.jpg", description:"Rain. Blur. Greyscale.", 
+content: `
+The relentless rain pelts against the window pane with patient fury, creating a watery veil that swirls the view before me. The world ahead appears blurred, the landscape bleeds into the fabric of reality. The light emitting from the lamp-posts below pierce through the thick fog, diffracting through the somber droplets of water, forming nature’s iridescent kaleidoscopes. The raindrops cascade down my window, shimmering subtly as one races with the other to reach the bottom. The buildings appear dystopian, the atmosphere abruptly tranforms into a monotone greyscale. The concrete jungle starts to distort, the line between mother nature and man starts to blend. Life seemingly turns into a watercolor painting, the surrounding blur appears to be smudges of the pale grey and green hues, a masterpiece of god’s wrath. The dawn sky imitates Van Gough’s starry night, the delicate strokes of rain clouds, the powder blue concealed behind it, the moon nowhere in sight. Glistening droplets of melancholy form together miniature mirror lakes in the crevices of the footpath, not the good, the bad, or the ugly can escape the liquid reflection. The heavy downpour cloaks the housing blocks, a veil of haze outline their dreary silhouettes. Solitary figures emerging from the abyss of fog clutch the grips of their umbrellas, ripples form in the tranquil puddles beneath their feet as they hurry through them unknowingly. A damp, earthy petrichor seeps through the tiny gaps of the window, a fragrance of foliage only nature can exude. The window’s glass is chill to the touch of one’s fingertips, a shiver dissipates through my warm-blooded body. Wisps of condensation lurk around the edges of the window with its ghostly embrace, the glass being an ethereal canvas of solstice. A poetic charm unfolds in the surroundings, the minute hand on the cosmic timepiece halts suddenly, the gravitational pull of the nebula only attracting it once the rain calms. The damp canvas is disrupted as the sun begins to emerge, its golden tendrils turn the raindrops into diamond prisms, refracting the beams of sunlight in an array of radiant colors. The monotonous, dark setting of the city is now reformed as rays of color and vibrance ooze through, steadily harbingering the approach of joy and glee in life once again.
+`
+}
+],
+narrative: [
+{ title:"Roses Don’t Bloom in Room 306", meta:"Agastya Sumeer Kaul (July, 2025)", image:"JOVI.jpg", description:"Silence. Perfumed. Lingering.", 
+ content: `<em>They have refurbished the walls with muted brocade, burnished the fixtures until
+they gleam like forgotten heirlooms, and draped the windows with pristine
+damask. Yet beneath this meticulous theatre of renewal, <strong>Room 306</strong> persists as
+an ossuary of memory. Its silence does not signify emptiness but a sanctum of
+reverberation. The air hangs heavy with what once was, a palimpsest of breath,
+of murmured confession, of silken undoing, suspended in amber stillness.
+
+This room does not entertain presence. It venerates absence. She lingers not as
+a specter, but as an impression. A warmth left in the curvature of the chair, a
+condensation clinging to the mirror long after her exhale has faded. Her
+laughter once diffused through these walls like unfinished music, a fugue
+abandoned mid-phrase. Now only stillness remains, more articulate than sound,
+more reverent than silence.
+
+I returned once with roses, ivory-petalled, their fragrance steeped in contrition.
+They did not unfurl. By morning, their stems had arched like cathedral spires in
+collapse and their petals curled inward, not from age but from understanding.
+No bloom persists within this chamber. Here, vitality is not welcomed. It is
+consecrated and entombed.
+
+There is no monogrammed inscription on the door. Only a numeral, dulled
+brass, discreet as a whispered invocation. <strong>Room 306</strong> is no longer a site of
+occupation. It is an archive of ache, a reliquary of the ephemeral, a mausoleum
+of the once-beautiful.
+
+Within these walls, memory is not recollected. It is relived.
+
+And now, as you close your eyes,
+know I’ll be thinking about you.</em>
+` 
+
+},
+{ title:"The Ouroboros Paradox", meta:"Agastya Sumeer Kaul (November, 2024)", image:"ACHERON.jpg", description:"Reality. Devouring. Itself.", 
+ content: `In Acheron, time unwound in curls, or so it did for Detective Elias Cade. The badge—a lackluster symbol of his power—served as his guiding principle in a world that ever curved and bent beneath his feet. The ouroboros carved into its face, which forever devoured its own tail, spoke of something he could not name but always felt: a caution or perhaps a fact.
+
+It began with the Mara case. Or did it? Cade couldn’t pinpoint the start, not anymore. Mara had appeared in fragments—first as a shadow in the precinct’s interrogation room, later as a whisper in an alleyway, and finally as a phantom in his apartment mirror. “The badge,” she’d said once, though her voice sounded like his own. “It holds you, binds you. But to what?”
+
+Reality buckled. Cade would wake up to find himself in places he didn’t remember going, following clues he didn’t remember receiving. The badge was always there, though. Sometimes battered, sometimes gleaming. Its weight in his pocket grounded him—until it didn’t.
+
+He chased Mara through a hundred versions of Acheron, the city reshaping itself with every step: streets turned into hallways, hallways into caverns. Sometimes, she begged him to wake up. Other times, she taunted him, calling him the architect of his own labyrinth.
+
+One day, Cade found himself holding two badges, each identical but subtly wrong. Mara stood behind him, her face shifting, folding in on itself like paper.
+
+“Which one will you trust?” she asked. Cade’s hand trembled as he chose.
+
+The world shattered. Or began.
+`
+
+},
+{ title:"Arcanum Est Hodie", meta:"Agastya Sumeer Kaul (August 2024)", image:"PET.jpg", description:"Tempus. Fragmenta. Desiderium.", 
+content: `<em>In this surreal age, I find myself born to dwell in a world that surpasses every past dream of mine. While I once ascended Mount Ventoux on a quest to gaze further into thy mortal essence; nou spirits are scattered, bound to gizmos, lost in the ephemeral digital display. Where once thoughts forged themselves in the crucible of reflection, now shattered into fragments. The letters I longed for, endowed with introspections, now diluted to screens glimpsed fleetingly, devoid of the purport we used to bestow upon them.
+
+Yet I marvel. The knowledge that was long confined to musty corners of forgotten bibliotheca now speeds across oceans with the ease of wind. The wisdom of ancient days for which I labored through endless pains so intricately to translate, is at the fingertips of all. For this democratizing of comprehension, one fears its depth is but an illusion. Minds do but skim its surface-like hands on endless sea graze, never to plunge the chasm.
+
+And love- my perennial muse, my torment, and my refuge-what has become of thee Somewhere in the immediacies of this new world, the leaping fire of longing for friends and family, the tender stirrings of desire that gave life to our words and actions, has been mislaid. Where's the poetry of separation, that exquisite ache of absence I once celebrated as the noblest expression of human bonding?
+
+In this paradoxical era, I would plead the world to halt. Conquer all the preoccupation and return to my beloved solitude; it is in the quiet that savors the bottom of the soul, that the kernels return to what it means to be a human being.
+
+- Francesco Petrarca</em>
+`
+
+}
+],
+Dossiers: [
+{ title:"Placeholder I", meta:"Agastya Sumeer Kaul", image:"placeholder.jpg", description:"Placeholder description.", content:"Placeholder text." },
+{ title:"Placeholder II", meta:"Agastya Sumeer Kaul", image:"placeholder.jpg", description:"Placeholder description.", content:"Placeholder text." },
+{ title:"Placeholder III", meta:"Agastya Sumeer Kaul", image:"placeholder.jpg", description:"Placeholder description.", content:"Placeholder text." },
+{ title:"Placeholder III", meta:"Agastya Sumeer Kaul", image:"placeholder.jpg", description:"Placeholder description.", content:"Placeholder text." }
+]
+};
+
+function loadCategory(cat){
+const grid=document.getElementById(cat+"-grid");
+if(!grid) return;
+grid.innerHTML="";
+works[cat].forEach((w,i)=>{
+const id=cat+i;
+grid.innerHTML+=`
+<div class="card" onclick="openWork('${id}')">
+<img src="${w.image}">
+<div class="card-content">
+<h3>${w.title}</h3>
+<p>${w.description}</p>
+</div>
+</div>
+
+<div id="${id}" class="modal">
+<div class="modal-content">
+<div class="close" onclick="closeWork('${id}')">Close ✕</div>
+<h2>${w.title}</h2>
+<div class="meta">${w.meta}</div>
+<hr class="divider">
+<img src="${w.image}">
+<p>${w.content}</p>
+</div>
+</div>`;
+});
+}
+
+function showCategory(id){
+document.querySelectorAll('.category').forEach(c=>c.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+loadCategory(id);
+}
+
+function openWork(id){
+document.body.classList.add("modal-open");
+document.getElementById(id).style.display="block";
+}
+
+function closeWork(id){
+document.body.classList.remove("modal-open");
+document.getElementById(id).style.display="none";
+}
+
+loadCategory("descriptive");
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
